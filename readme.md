@@ -159,7 +159,7 @@ While it is possible to use this bundle without requiring user authentication
 or handling possible XSRF (cross-site request forgery) issues, the data
 collected by the event logger would likely not be useful.
 
-.. warning:: It is strongly recommended that this bundle be used together with authentication and XSRF prevention.
+*It is strongly recommended that this bundle be used together with authentication and XSRF prevention.*
 
 
 Working Example

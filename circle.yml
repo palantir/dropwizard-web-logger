@@ -1,0 +1,13 @@
+machine:
+  java:
+    version: openjdk8
+  environment:
+    TERM: dumb
+
+general:
+  artifacts:
+    - build/libs
+
+test:
+  override:
+    - ./gradlew build

@@ -18,6 +18,7 @@ apply plugin: 'com.palantir.baseline-config'
 apply plugin: 'com.palantir.baseline-idea'
 apply plugin: 'com.palantir.baseline-checkstyle'
 apply plugin: 'com.palantir.baseline-findbugs'
+apply from: "${rootDir}/gradle/publish.gradle"
 
 repositories {
     jcenter()

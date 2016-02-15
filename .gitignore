@@ -19,6 +19,7 @@ out/
 
 ### Immutables ###
 .factorypath
+generated_src
 
 ### Log Files ###
 *.log

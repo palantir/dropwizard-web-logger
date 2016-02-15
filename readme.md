@@ -8,13 +8,22 @@ WebLoggerBundle
 
 Field Types
 -----------
-Fields have the following possible types:
+###Optional Fields
+A user has the option of including fields with the types listed below.
 
 | Type   | Description                                                                                                                                  |
 |--------|----------------------------------------------------------------------------------------------------------------------------------------------|
 | STRING | The bundle expects a string value                                                                                                            |
 | INT    | The bundle expects an integer value                                                                                                          |
-| DATE   | The bundle expects a date passed as a *long* in epoch time.,The date will be logged as by SimpleDateFormat as *yyyy-MM-dd HH:mm:ss z* in UTC |
+| DATE   | The bundle expects a date passed as a *long* in epoch time. The date will be logged as by SimpleDateFormat as *yyyy-MM-dd HH:mm:ss z* in UTC |
+
+###Fixed Fields
+Fixed fields will be added to all logged lines.
+
+| Type   | Description                                                                                                                                  |
+|--------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| TIMESTAMP | The timestamp of the log will be logged as *yyyy-MM-dd HH:mm:ss z* in UTC |
+
 
 **Example**
 

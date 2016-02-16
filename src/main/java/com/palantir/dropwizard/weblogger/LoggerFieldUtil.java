@@ -23,50 +23,50 @@ public final class LoggerFieldUtil {
 
     private LoggerFieldUtil() { }
 
-    public static boolean validateJsonObject(List<LoggerField> configFields, String eventJson) {
+    public static boolean validateJsonObject(List<LoggerEvent> configFields, String eventJson) {
         checkNotNull(configFields);
         checkNotNull(eventJson);
 
         JSONObject jsonEventObject = new JSONObject(eventJson);
 
-        for (LoggerField field : configFields) {
-            Object fieldValue = jsonEventObject.get(field.getField());
-
-            switch (field.getType()) {
-                case INT:
-                    if (!(fieldValue instanceof Integer)) {
-                        logger.error("Object should be of type 'int' for field '"
-                                + field.getField() + "'. Received value '" + fieldValue
-                                + "' which is not of type 'int'.");
-                        return false;
-                    }
-                    break;
-                case STRING:
-                    if (!(fieldValue instanceof String)) {
-                        logger.error("Object should be of type 'string' for field '"
-                                + field.getField() + "'. Received value '" + fieldValue
-                                + "' which is not of type 'string'.");
-                        return false;
-                    }
-                    break;
-                case DATE:
-                    try {
-                        Long.parseLong(fieldValue.toString());
-                    } catch (NumberFormatException e) {
-
-                        logger.error("Object should be of type 'date' in epoch time for field '"
-                                + field.getField() + "'. Received value '" + fieldValue
-                                + "' which is not of type 'date' in epoch time.");
-                        return false;
-                    }
-
-                    break;
-                default:
-                    System.out.println(field.getType() + " is not a valid field type. "
-                            + "Must be 'int', 'string', or 'date'");
-                    return false;
-            }
-        }
+//        for (LoggerField field : configFields) {
+//            Object fieldValue = jsonEventObject.get(field.getField());
+//
+//            switch (field.getType()) {
+//                case INT:
+//                    if (!(fieldValue instanceof Integer)) {
+//                        logger.error("Object should be of type 'int' for field '"
+//                                + field.getField() + "'. Received value '" + fieldValue
+//                                + "' which is not of type 'int'.");
+//                        return false;
+//                    }
+//                    break;
+//                case STRING:
+//                    if (!(fieldValue instanceof String)) {
+//                        logger.error("Object should be of type 'string' for field '"
+//                                + field.getField() + "'. Received value '" + fieldValue
+//                                + "' which is not of type 'string'.");
+//                        return false;
+//                    }
+//                    break;
+//                case DATE:
+//                    try {
+//                        Long.parseLong(fieldValue.toString());
+//                    } catch (NumberFormatException e) {
+//
+//                        logger.error("Object should be of type 'date' in epoch time for field '"
+//                                + field.getField() + "'. Received value '" + fieldValue
+//                                + "' which is not of type 'date' in epoch time.");
+//                        return false;
+//                    }
+//
+//                    break;
+//                default:
+//                    System.out.println(field.getType() + " is not a valid field type. "
+//                            + "Must be 'int', 'string', or 'date'");
+//                    return false;
+//            }
+//        }
         return true;
     }
 

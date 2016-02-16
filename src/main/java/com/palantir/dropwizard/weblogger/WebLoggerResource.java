@@ -11,6 +11,9 @@ import io.dropwizard.jackson.Jackson;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
@@ -42,15 +45,26 @@ public final class WebLoggerResource {
     }
 
     @POST
-    public void logContent(String eventJson) throws ParseException {
-        if (LoggerFieldUtil.validateJsonObject(this.config.getFields(), eventJson)) {
-            analyticsLogger.info(addFixedFields(eventJson).toString());
+    public void logContent(String eventJsonString) throws ParseException {
+
+        JSONObject jsonEvent = new JSONObject(eventJsonString);
+        Set<String> logLineFields = jsonEvent.keySet();
+
+        for (LoggerEvent event : config.getEvents()) {
+            if (event.getFields().)
+        }
+
+
+
+
+        if (LoggerFieldUtil.validateJsonObject(this.config.getEvents(), eventJsonString)) {
+            analyticsLogger.info(addFixedFields(jsonEvent).toString());
         } else {
             throw new BadRequestException();
         }
     }
 
-    private JSONObject addFixedFields(String eventJson) {
+    private JSONObject addFixedFields(JSONObject eventJson) {
         JSONObject json = new JSONObject(eventJson);
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss z");
         ft.setTimeZone(TimeZone.getTimeZone("UTC"));

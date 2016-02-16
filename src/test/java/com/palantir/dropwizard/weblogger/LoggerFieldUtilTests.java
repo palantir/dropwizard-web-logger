@@ -56,28 +56,28 @@ public final class LoggerFieldUtilTests {
                 ImmutableLoggerField.builder().field("id").type(FieldTypes.DATE).build(), "{ \"id\": \"awefaewf\" }");
     }
 
-    @Test
-    public void multiGoodInput_validateJsonObjectTest() {
-        List<LoggerField> fields = Lists.newArrayList();
-        fields.add(ImmutableLoggerField.builder().field("id").type(FieldTypes.STRING).build());
-        fields.add(ImmutableLoggerField.builder().field("name").type(FieldTypes.STRING).build());
-        fields.add(ImmutableLoggerField.builder().field("description").type(FieldTypes.STRING).build());
-        fields.add(ImmutableLoggerField.builder().field("mynumber").type(FieldTypes.INT).build());
-        fields.add(ImmutableLoggerField.builder().field("mydate").type(FieldTypes.DATE).build());
-
-        WebLoggerConfiguration config =
-                ImmutableWebLoggerConfiguration.builder().enabled(true).fields(fields).build();
-
-        String eventJson = "{\"id\":\"12aoi312\", "
-                + "\"name\": \"bruce wayne\", "
-                + "\"description\": \"this is a description\", "
-                + "\"mynumber\": 123, "
-                + "\"mydate\": 123552 }";
-
-        boolean validateJsonObject = LoggerFieldUtil.validateJsonObject(config.getFields(), eventJson);
-
-        assertTrue(validateJsonObject);
-    }
+//    @Test
+//    public void multiGoodInput_validateJsonObjectTest() {
+//        List<LoggerField> fields = Lists.newArrayList();
+//        fields.add(ImmutableLoggerField.builder().field("id").type(FieldTypes.STRING).build());
+//        fields.add(ImmutableLoggerField.builder().field("name").type(FieldTypes.STRING).build());
+//        fields.add(ImmutableLoggerField.builder().field("description").type(FieldTypes.STRING).build());
+//        fields.add(ImmutableLoggerField.builder().field("mynumber").type(FieldTypes.INT).build());
+//        fields.add(ImmutableLoggerField.builder().field("mydate").type(FieldTypes.DATE).build());
+//
+//        WebLoggerConfiguration config =
+//                ImmutableWebLoggerConfiguration.builder().enabled(true).fields(fields).build();
+//
+//        String eventJson = "{\"id\":\"12aoi312\", "
+//                + "\"name\": \"bruce wayne\", "
+//                + "\"description\": \"this is a description\", "
+//                + "\"mynumber\": 123, "
+//                + "\"mydate\": 123552 }";
+//
+//        boolean validateJsonObject = LoggerFieldUtil.validateJsonObject(config.getFields(), eventJson);
+//
+//        assertTrue(validateJsonObject);
+//    }
 
     @Test
     public void multiBadInput_validateJsonObjectTest() {

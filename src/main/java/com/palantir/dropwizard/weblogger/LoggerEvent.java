@@ -18,7 +18,7 @@ package com.palantir.dropwizard.weblogger;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import java.util.List;
+import java.util.Set;
 import org.immutables.value.Value;
 
 /**
@@ -28,7 +28,7 @@ import org.immutables.value.Value;
 @JsonSerialize(as = ImmutableLoggerEvent.class)
 @JsonDeserialize(as = ImmutableLoggerEvent.class)
 public abstract class LoggerEvent {
-    public abstract List<LoggerField> getFields();
+    public abstract Set<String> getFields();
 
-    public abstract String getName();
+    public abstract String getType();
 }

@@ -11,8 +11,6 @@ import io.dropwizard.jackson.Jackson;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 import javax.ws.rs.BadRequestException;
@@ -50,25 +48,47 @@ public final class WebLoggerResource {
         JSONObject jsonEvent = new JSONObject(eventJsonString);
         Set<String> logLineFields = jsonEvent.keySet();
 
+        boolean validEvent = false;
+        String eventType = "";
+
         for (LoggerEvent event : config.getEvents()) {
-            if (event.getFields().)
+            if (event.getFields().containsAll(logLineFields)) {
+                validEvent = true;
+                eventType = event.getType();
+            }
         }
 
-
-
-
-        if (LoggerFieldUtil.validateJsonObject(this.config.getEvents(), eventJsonString)) {
-            analyticsLogger.info(addFixedFields(jsonEvent).toString());
-        } else {
-            throw new BadRequestException();
+        if (!validEvent) {
+            returnFieldsDontMatchError(jsonEvent);
         }
+
+        jsonEvent = addFixedFields(jsonEvent);
+        jsonEvent = addEventType(jsonEvent, eventType);
+
+        analyticsLogger.info(jsonEvent.toString());
     }
 
-    private JSONObject addFixedFields(JSONObject eventJson) {
-        JSONObject json = new JSONObject(eventJson);
+    private void returnFieldsDontMatchError(JSONObject jsonEvent) {
+        String fieldSets = "";
+        for (LoggerEvent event : config.getEvents()) {
+            fieldSets  += event.getFields().toString() + " ";
+        }
+
+        throw new BadRequestException("It's likely that the fields in the log provided don't "
+                + "match the server's configuration. Please adjust your log fields or the"
+                + " configuration in your <server>.yml file. Possible choices are: "
+                + fieldSets + ". You provided: " + jsonEvent.keySet());
+    }
+
+    private JSONObject addEventType(JSONObject jsonEvent, String eventType) {
+        jsonEvent.put("EventType", eventType);
+        return jsonEvent;
+    }
+
+    private JSONObject addFixedFields(JSONObject jsonEvent) {
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss z");
         ft.setTimeZone(TimeZone.getTimeZone("UTC"));
-        json.put("timestamp", ft.format(new Date()));
-        return json;
+        jsonEvent.put("timestamp", ft.format(new Date()));
+        return jsonEvent;
     }
 }

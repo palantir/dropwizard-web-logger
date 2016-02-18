@@ -16,7 +16,9 @@ import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import org.junit.Test;
 
 /**
@@ -28,8 +30,8 @@ public final class WebLoggerBundleTests {
             new WebLoggerConfigurationProvider() {
         @Override
         public WebLoggerConfiguration getWebLogger() {
-            List<LoggerField> list = Lists.newArrayList();
-            return ImmutableWebLoggerConfiguration.builder().enabled(true).fields(list).build();
+            Set<LoggerEvent> list = Collections.<LoggerEvent>emptySet();
+            return ImmutableWebLoggerConfiguration.builder().enabled(true).events(list).build();
         }
     };
 
@@ -60,8 +62,8 @@ public final class WebLoggerBundleTests {
         WebLoggerConfigurationProvider config = new WebLoggerConfigurationProvider() {
             @Override
             public WebLoggerConfiguration getWebLogger() {
-                List<LoggerField> list = Lists.newArrayList();
-                return ImmutableWebLoggerConfiguration.builder().enabled(false).fields(list).build();
+                List<LoggerEvent> list = Lists.newArrayList();
+                return ImmutableWebLoggerConfiguration.builder().enabled(false).events(list).build();
             }
         };
 

@@ -69,10 +69,11 @@ public final class WebLoggerResource {
     }
 
     private void returnFieldsDontMatchError(JSONObject jsonEvent) {
-        String fieldSets = "";
+        StringBuffer buffer = new StringBuffer();
         for (LoggerEvent event : config.getEvents()) {
-            fieldSets  += event.getFields().toString() + " ";
+            buffer.append(event.getFields().toString() + " ");
         }
+        String fieldSets = buffer.toString();
 
         throw new BadRequestException("It's likely that the fields in the log provided don't "
                 + "match the server's configuration. Please adjust your log fields or the"

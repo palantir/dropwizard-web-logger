@@ -19,5 +19,5 @@ import org.immutables.value.Value;
 public abstract class WebLoggerConfiguration {
     public abstract boolean getEnabled();
 
-    public abstract List<LoggerField> getFields();
+    public abstract List<LoggerEvent> getEvents();
 }

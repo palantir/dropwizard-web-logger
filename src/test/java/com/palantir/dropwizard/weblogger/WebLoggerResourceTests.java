@@ -8,10 +8,11 @@ import static org.mockito.Mockito.mock;
 
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.core.Appender;
-import com.google.common.collect.Lists;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import javax.ws.rs.BadRequestException;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
@@ -21,33 +22,70 @@ import org.slf4j.LoggerFactory;
  */
 public final class WebLoggerResourceTests {
 
-    @Test
-    public void testGoodLogContent() throws IOException, ParseException {
-        testLogContent("name", FieldTypes.STRING);
-
-        // no exception thrown is a pass
-    }
-
     @Test(expected = BadRequestException.class)
-    public void testBadLogContent() throws IOException, ParseException {
-        testLogContent("name", FieldTypes.INT);
-    }
-
-    private void testLogContent(String field, FieldTypes type) throws ParseException {
+    public void testBadFieldsInLogContent() throws IOException, ParseException {
         Appender mockAppender = mock(Appender.class);
         Logger root = (Logger) LoggerFactory.getLogger("analytics");
         root.addAppender(mockAppender);
 
-        List<LoggerField> list = Lists.newArrayList();
-        list.add(ImmutableLoggerField.builder().field(field).type(type).build());
+        Set<LoggerEvent> events = new HashSet<LoggerEvent>();
 
-        String eventJson = "{\"name\": \"storm\"}";
+        LoggerEvent loggerEvent = new LoggerEvent() {
+            @Override
+            public Set<String> getFields() {
+                return new HashSet<String>(Arrays.asList("user", "title"));
+            }
+
+            @Override
+            public String getType() {
+                return "userLogin";
+            }
+        };
+
+        events.add(loggerEvent);
 
         WebLoggerConfiguration webLoggerConfiguration =
-                ImmutableWebLoggerConfiguration.builder().enabled(true).fields(list).build();
+                ImmutableWebLoggerConfiguration.builder().enabled(true).events(events).build();
 
         WebLoggerResource webLoggerResource = new WebLoggerResource(webLoggerConfiguration);
 
+        String eventJson = "{\"badUser\": \"storm\"}";
         webLoggerResource.logContent(eventJson);
+
     }
+
+    @Test
+    public void testGoodFieldsInLogContent() throws IOException, ParseException {
+        Appender mockAppender = mock(Appender.class);
+        Logger root = (Logger) LoggerFactory.getLogger("analytics");
+        root.addAppender(mockAppender);
+
+        Set<LoggerEvent> events = new HashSet<LoggerEvent>();
+
+        LoggerEvent loggerEvent = new LoggerEvent() {
+            @Override
+            public Set<String> getFields() {
+                return new HashSet<String>(Arrays.asList("user", "title"));
+            }
+
+            @Override
+            public String getType() {
+                return "userLogin";
+            }
+        };
+
+        events.add(loggerEvent);
+
+        WebLoggerConfiguration webLoggerConfiguration =
+                ImmutableWebLoggerConfiguration.builder().enabled(true).events(events).build();
+
+        WebLoggerResource webLoggerResource = new WebLoggerResource(webLoggerConfiguration);
+
+        String eventJson = "{\"user\": \"storm\",\"title\": \"scientist\"}";
+        webLoggerResource.logContent(eventJson);
+
+        // Doesn't throw exception..
+
+    }
+
 }

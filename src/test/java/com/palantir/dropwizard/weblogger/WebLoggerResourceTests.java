@@ -8,6 +8,7 @@ import static org.mockito.Mockito.mock;
 
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.core.Appender;
+import com.google.common.base.Optional;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
@@ -40,6 +41,11 @@ public final class WebLoggerResourceTests {
             public String getType() {
                 return "userLogin";
             }
+
+            @Override
+            public Optional<Boolean> getEnabled() {
+                return Optional.of(true);
+            }
         };
 
         events.add(loggerEvent);
@@ -71,6 +77,11 @@ public final class WebLoggerResourceTests {
             @Override
             public String getType() {
                 return "userLogin";
+            }
+
+            @Override
+            public Optional<Boolean> getEnabled() {
+                return Optional.of(true);
             }
         };
 

@@ -43,20 +43,21 @@ Usage
 			compile "com.palantir.dropwizard:dropwizard-web-logger:<VERSION>"
 		}
 
-2.  Modify your server's configuration file
+2.  Modify your server's **configuration** file
 
     a. Add ``webLogger`` to your yml file and enable it.
         ``server.yml``
 
 		    webLogger:
-		      enabled: <true|false>
+		      enabled: <true|false> # optional - defaults to true
 		      events:
 		        - type: <eventTypeName>
 		          fields: [<fields>]
+		          enabled: <true|false> # optional - defaults to true
 		        - type: <eventTypeName>
 		          fields: [<fields]
-
-        Example
+		          enabled: <true|false> # optional - defaults to true
+Example
         
 			webLogger:
 			  enabled: true
@@ -77,7 +78,7 @@ Usage
 	            archivedLogFilenamePattern: ./var/log/<APPNAME>-usage-%d.json.log
 	            archivedFileCount: <NUMBER_OF_LOGFILES_TO_ARCHIVE>
 
-        Example
+	   Example
 
             logging:
               appenders:

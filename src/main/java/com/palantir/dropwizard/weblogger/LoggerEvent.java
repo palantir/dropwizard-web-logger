@@ -18,6 +18,7 @@ package com.palantir.dropwizard.weblogger;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.base.Optional;
 import java.util.Set;
 import org.immutables.value.Value;
 
@@ -31,4 +32,6 @@ public abstract class LoggerEvent {
     public abstract Set<String> getFields();
 
     public abstract String getType();
+
+    public abstract Optional<Boolean> getEnabled();
 }

@@ -51,7 +51,7 @@ public final class WebLoggerResourceTests {
         events.add(loggerEvent);
 
         WebLoggerConfiguration webLoggerConfiguration =
-                ImmutableWebLoggerConfiguration.builder().enabled(true).events(events).build();
+                ImmutableWebLoggerConfiguration.builder().events(events).build();
 
         WebLoggerResource webLoggerResource = new WebLoggerResource(webLoggerConfiguration);
 
@@ -88,7 +88,7 @@ public final class WebLoggerResourceTests {
         events.add(loggerEvent);
 
         WebLoggerConfiguration webLoggerConfiguration =
-                ImmutableWebLoggerConfiguration.builder().enabled(true).events(events).build();
+                ImmutableWebLoggerConfiguration.builder().events(events).build();
 
         WebLoggerResource webLoggerResource = new WebLoggerResource(webLoggerConfiguration);
 

@@ -17,8 +17,13 @@ import org.immutables.value.Value;
 @Value.Immutable
 @JsonSerialize(as = ImmutableWebLoggerConfiguration.class)
 @JsonDeserialize(as = ImmutableWebLoggerConfiguration.class)
+@SuppressWarnings("checkstyle:designforextension")
 public abstract class WebLoggerConfiguration {
-    public abstract Optional<Boolean> getEnabled();
+
+    @Value.Default
+    public Optional<Boolean> getEnabled() {
+        return Optional.of(true);
+    }
 
     public abstract List<LoggerEvent> getEvents();
 }

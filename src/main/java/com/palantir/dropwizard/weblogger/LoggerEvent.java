@@ -18,6 +18,7 @@ package com.palantir.dropwizard.weblogger;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.base.Optional;
 import java.util.Set;
 import org.immutables.value.Value;
 
@@ -27,7 +28,13 @@ import org.immutables.value.Value;
 @Value.Immutable
 @JsonSerialize(as = ImmutableLoggerEvent.class)
 @JsonDeserialize(as = ImmutableLoggerEvent.class)
+@SuppressWarnings("checkstyle:designforextension")
 public abstract class LoggerEvent {
+    @Value.Default
+    public Optional<Boolean> getEnabled() {
+        return Optional.of(true);
+    }
+
     public abstract Set<String> getFields();
 
     public abstract String getType();

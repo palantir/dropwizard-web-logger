@@ -67,9 +67,6 @@ Example
 			    - type: userAuthLog
 			      fields: [idNumber, userName, someOtherField]
 
-
-        See above for possible field types.
-
     b. Add an appender of type ``web-logger`` to your Dropwizard configuration YAML in the logging section:
         ``server.yml``
 

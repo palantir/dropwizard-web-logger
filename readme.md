@@ -17,6 +17,12 @@ WebLoggerBundle
 
 	{"idNumber":"42","title":"batman","userName":"bruce wayne”}
 
+*and the following configuration:*
+
+	webLogger:
+	  events:
+	    - type: userLogin
+	      fields: [idNumber, userName, title]
 
 ####A Line is Logged
 Logger will log the following line to a file on a specific backend

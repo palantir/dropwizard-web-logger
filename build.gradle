@@ -39,6 +39,6 @@ dependencies {
 }
 
 version gitVersion()
-group 'com.palantir.dropwizard'
+group 'com.palantir.dropwizard.web-logger'
 
 sourceCompatibility = 1.8

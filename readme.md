@@ -1,5 +1,5 @@
-WebLoggerBundle
-===============
+Dropwizard Web Logger
+=====================
 [![Circle CI](https://circleci.com/gh/palantir/dropwizard-web-logger.svg?style=svg&circle-token=ef99a2065c608bd3fd6237eff9034488275d6582)](https://circleci.com/gh/palantir/dropwizard-web-logger)
 [ ![Download](https://api.bintray.com/packages/palantir/releases/dropwizard-web-logger/images/download.svg) ](https://bintray.com/palantir/releases/dropwizard-web-logger/_latestVersion)
 

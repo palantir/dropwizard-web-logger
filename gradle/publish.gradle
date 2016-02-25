@@ -45,9 +45,9 @@ bintray {
     user = System.env.BINTRAY_USER
     key = System.env.BINTRAY_KEY
     pkg {
-        repo = 'maven'
+        repo = 'releases'
         name = 'dropwizard-web-logger'
-        userOrg = 'zoubeiri'
+        userOrg = 'palantir'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/palantir/dropwizard-web-logger.git'
         publications = ['bintray']

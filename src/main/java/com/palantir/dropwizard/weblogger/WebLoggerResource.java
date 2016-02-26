@@ -7,7 +7,6 @@ package com.palantir.dropwizard.weblogger;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.common.base.Optional;
 import io.dropwizard.jackson.Jackson;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,7 +50,7 @@ public final class WebLoggerResource {
 
         boolean validEvent = false;
         String eventType = "";
-        Optional<Boolean> eventLogEnabled = Optional.absent();
+        boolean eventLogEnabled = false;
 
         for (LoggerEvent event : config.getEvents()) {
             if (event.getFields().containsAll(logLineFields)) {
@@ -65,7 +64,7 @@ public final class WebLoggerResource {
             generateFieldsDontMatchError(jsonEvent);
         }
 
-        if (eventLogEnabled.or(true)) {
+        if (eventLogEnabled) {
             jsonEvent = addFixedFields(jsonEvent);
             jsonEvent = addEventType(jsonEvent, eventType);
 

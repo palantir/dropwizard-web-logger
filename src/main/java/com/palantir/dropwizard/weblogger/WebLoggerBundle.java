@@ -25,7 +25,7 @@ public final class WebLoggerBundle implements ConfiguredBundle<WebLoggerConfigur
         checkNotNull(config);
         checkNotNull(environment);
 
-        if (config.getWebLogger().getEnabled().or(true)) {
+        if (config.getWebLogger().getEnabled()) {
             environment.jersey().register(new WebLoggerResource(config.getWebLogger()));
         }
     }

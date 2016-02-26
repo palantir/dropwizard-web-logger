@@ -11,7 +11,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
@@ -64,7 +63,7 @@ public final class WebLoggerBundleTests {
             @Override
             public WebLoggerConfiguration getWebLogger() {
                 List<LoggerEvent> list = Lists.newArrayList();
-                return ImmutableWebLoggerConfiguration.builder().enabled(Optional.of(false)).events(list).build();
+                return ImmutableWebLoggerConfiguration.builder().enabled(false).events(list).build();
             }
         };
 

@@ -126,7 +126,15 @@ Example
             bootstrap.addBundle(new WebLoggerBundle());
         }
 
+Setting up the project with an IDE
+----------------------------------
+with Eclipse, import the project and run:
 
+        ./gradlew eclipse
+
+with IntelliJ, import the project and run:
+
+        ./gradlew idea
 
 Authentication and Security
 ---------------------------

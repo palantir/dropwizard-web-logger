@@ -6,7 +6,6 @@ package com.palantir.dropwizard.weblogger;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.google.common.base.Optional;
 import java.util.List;
 import org.immutables.value.Value;
 
@@ -21,8 +20,8 @@ import org.immutables.value.Value;
 public abstract class WebLoggerConfiguration {
 
     @Value.Default
-    public Optional<Boolean> getEnabled() {
-        return Optional.of(true);
+    public boolean getEnabled() {
+        return true;
     }
 
     public abstract List<LoggerEvent> getEvents();

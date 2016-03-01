@@ -60,10 +60,8 @@ Usage
 		      events:
 		        - type: <eventTypeName>
 		          fields: [<fields>]
-		          enabled: <true|false> # optional - defaults to true
 		        - type: <eventTypeName>
 		          fields: [<fields]
-		          enabled: <true|false> # optional - defaults to true
 Example
         
 			webLogger:

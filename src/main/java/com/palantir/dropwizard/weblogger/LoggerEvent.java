@@ -29,10 +29,6 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = ImmutableLoggerEvent.class)
 @SuppressWarnings("checkstyle:designforextension")
 public abstract class LoggerEvent {
-    @Value.Default
-    public boolean getEnabled() {
-        return true;
-    }
 
     public abstract Set<String> getFields();
 

@@ -50,13 +50,11 @@ public final class WebLoggerResource {
 
         boolean validEvent = false;
         String eventType = "";
-        boolean eventLogEnabled = false;
 
         for (LoggerEvent event : config.getEvents()) {
             if (event.getFields().containsAll(logLineFields)) {
                 validEvent = true;
                 eventType = event.getType();
-                eventLogEnabled = event.getEnabled();
             }
         }
 
@@ -64,12 +62,10 @@ public final class WebLoggerResource {
             generateFieldsDontMatchError(jsonEvent);
         }
 
-        if (eventLogEnabled) {
-            jsonEvent = addFixedFields(jsonEvent);
-            jsonEvent = addEventType(jsonEvent, eventType);
+        jsonEvent = addFixedFields(jsonEvent);
+        jsonEvent = addEventType(jsonEvent, eventType);
 
-            analyticsLogger.info(jsonEvent.toString());
-        }
+        analyticsLogger.info(jsonEvent.toString());
     }
 
     private void generateFieldsDontMatchError(JSONObject jsonEvent) {

@@ -40,11 +40,6 @@ public final class WebLoggerResourceTests {
             public String getType() {
                 return "userLogin";
             }
-
-            @Override
-            public boolean getEnabled() {
-                return true;
-            }
         };
 
         events.add(loggerEvent);
@@ -76,11 +71,6 @@ public final class WebLoggerResourceTests {
             @Override
             public String getType() {
                 return "userLogin";
-            }
-
-            @Override
-            public boolean getEnabled() {
-                return true;
             }
         };
 

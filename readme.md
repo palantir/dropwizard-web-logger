@@ -41,8 +41,8 @@ Fixed fields will be added to all logged lines.
 Usage
 -----
 
-1.  Add the ``com.palantir.dropwizard:dropwizard-web-logger:<VERSION>`` dependency to your project's build.gradle file.
-    The most recent version number can be found by looking at the [Releases Page](http://ivy.yojoe.local/artifactory/repo/com.palantir.dropwizard/dropwizard-web-logger/).
+1.  Add the ``com.palantir.weblogger:dropwizard-web-logger:<VERSION>`` dependency to your project's build.gradle file.
+    The most recent version number can be found by looking at the [Releases Page](https://github.com/palantir/dropwizard-web-logger/releases).
     The dependencies section should look something like this:
 
 		dependencies {

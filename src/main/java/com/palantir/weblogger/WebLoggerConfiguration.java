@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package com.palantir.dropwizard.weblogger;
+package com.palantir.weblogger;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import java.util.Set;
+import java.util.List;
 import org.immutables.value.Value;
 
 /**
- * POJO for deserializing event fields.
+ * Configuration for {@link WebLoggerBundle}.
  */
+
 @Value.Immutable
-@JsonSerialize(as = ImmutableLoggerEvent.class)
-@JsonDeserialize(as = ImmutableLoggerEvent.class)
+@JsonSerialize(as = ImmutableWebLoggerConfiguration.class)
+@JsonDeserialize(as = ImmutableWebLoggerConfiguration.class)
 @SuppressWarnings("checkstyle:designforextension")
-public abstract class LoggerEvent {
+public abstract class WebLoggerConfiguration {
+
     @Value.Default
     public boolean getEnabled() {
         return true;
     }
 
-    public abstract Set<String> getFields();
-
-    public abstract String getType();
+    public abstract List<LoggerEvent> getEvents();
 }

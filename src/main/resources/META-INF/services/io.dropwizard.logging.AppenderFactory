@@ -1,1 +1,1 @@
-com.palantir.dropwizard.weblogger.AnalyticsAppenderFactory
+com.palantir.weblogger.AnalyticsAppenderFactory

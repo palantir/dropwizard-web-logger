@@ -62,7 +62,7 @@ Usage
 		          fields: [<fields>]
 		          enabled: <true|false> # optional - defaults to true
 		        - type: <eventTypeName>
-		          fields: [<fields]
+		          fields: [<fields>]
 		          enabled: <true|false> # optional - defaults to true
 Example
         

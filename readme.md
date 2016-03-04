@@ -66,13 +66,13 @@ Usage
 		          enabled: <true|false> # optional - defaults to true
 Example
         
-			webLogger:
-			  enabled: true
-			  events:
-			    - type: userLogin
-			      fields: [idNumber, userName, title]
-		            - type: person
-		              fields: [hairColor, height, tattoos]
+		webLogger:
+		  enabled: true
+		  events:
+		    - type: userLogin
+		      fields: [idNumber, userName, title]
+		    - type: person
+		      fields: [hairColor, height, tattoos]
 
     b. Add an appender of type ``web-logger`` to your Dropwizard configuration YAML in the logging section:
         ``server.yml``

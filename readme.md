@@ -71,8 +71,8 @@ Example
 			  events:
 			    - type: userLogin
 			      fields: [idNumber, userName, title]
-			    - type: userAuthLog
-			      fields: [idNumber, userName, someOtherField]
+		            - type: person
+		              fields: [hairColor, height, tattoos]
 
     b. Add an appender of type ``web-logger`` to your Dropwizard configuration YAML in the logging section:
         ``server.yml``

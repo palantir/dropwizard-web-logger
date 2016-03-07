@@ -23,13 +23,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import org.junit.Test;
 
@@ -42,8 +40,8 @@ public final class WebLoggerBundleTests {
             new WebLoggerConfigurationProvider() {
         @Override
         public WebLoggerConfiguration getWebLogger() {
-            Set<LoggerEvent> list = Collections.<LoggerEvent>emptySet();
-            return ImmutableWebLoggerConfiguration.builder().events(list).build();
+            Set<String> list = Collections.<String>emptySet();
+            return ImmutableWebLoggerConfiguration.builder().eventNames(list).build();
         }
     };
 
@@ -74,8 +72,8 @@ public final class WebLoggerBundleTests {
         WebLoggerConfigurationProvider config = new WebLoggerConfigurationProvider() {
             @Override
             public WebLoggerConfiguration getWebLogger() {
-                List<LoggerEvent> list = Lists.newArrayList();
-                return ImmutableWebLoggerConfiguration.builder().enabled(false).events(list).build();
+                Set<String> list = Collections.<String>emptySet();
+                return ImmutableWebLoggerConfiguration.builder().enabled(false).eventNames(list).build();
             }
         };
 

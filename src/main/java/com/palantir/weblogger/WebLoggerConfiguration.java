@@ -18,7 +18,7 @@ package com.palantir.weblogger;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import java.util.List;
+import java.util.Set;
 import org.immutables.value.Value;
 
 /**
@@ -36,5 +36,5 @@ public abstract class WebLoggerConfiguration {
         return true;
     }
 
-    public abstract List<LoggerEvent> getEvents();
+    public abstract Set<String> getEventNames();
 }

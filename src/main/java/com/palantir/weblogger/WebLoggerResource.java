@@ -63,6 +63,7 @@ public final class WebLoggerResource {
         if (config.getEventNames().contains(eventName)) {
             JSONObject jsonLog = addEventName(jsonEvent, eventName);
             jsonLog = addTimestamp(jsonLog);
+
             analyticsLogger.info(jsonLog.toString());
         } else {
             throw new BadRequestException("The eventName param provided is not specified in the configuration."

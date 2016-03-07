@@ -12,23 +12,25 @@ Dropwizard Web Logger
 ####Make Call
 *Send a POST request to:*
 
-	http://localhost:8000/<web-app-name>/api/web-logger
+	http://localhost:8000/<web-app-name>/api/web-logger/events/<eventName>
+
+Example
+
+	http://localhost:8000/<web-app-name>/api/web-logger/events/jump
 
 *with the body content:*
 
-	{"idNumber":"42","title":"batman","userName":"bruce wayne”}
+	{"height":"42feet","name":"douglas"}
 
 *and the following configuration:*
 
 	webLogger:
-	  events:
-	    - type: userLogin
-	      fields: [idNumber, userName, title]
+	  eventNames: [jump, highfive]
 
 ####A Line is Logged
 Logger will log the following line to a file on a specific backend
 
-	{"idNumber":"42","EventType":"userLogin","title":"batman","userName":"bruce wayne","timestamp":"2016-02-18 12:23:54 UTC"}
+	{"name":"douglas","eventName":"jump","height":"42feet","timestamp":"2016-03-07 10:41:38 UTC"}
 
 ###Fixed Fields
 Fixed fields will be added to all logged lines.
@@ -36,7 +38,6 @@ Fixed fields will be added to all logged lines.
 | Type   | Description                                                                                                                                  |
 |--------|----------------------------------------------------------------------------------------------------------------------------------------------|
 | Timestamp | The timestamp of the log will be logged as *yyyy-MM-dd HH:mm:ss z* in UTC |
-| EventType | The event type defined in the web-logger-bundle configuration |
 
 Usage
 -----
@@ -57,22 +58,12 @@ Usage
 
 		    webLogger:
 		      enabled: <true|false> # optional - defaults to true
-		      events:
-		        - type: <eventTypeName>
-		          fields: [<fields>]
-		          enabled: <true|false> # optional - defaults to true
-		        - type: <eventTypeName>
-		          fields: [<fields>]
-		          enabled: <true|false> # optional - defaults to true
-Example
+		      eventNames: [<EventNames>]
+	   Example
         
-		webLogger:
-		  enabled: true
-		  events:
-		    - type: userLogin
-		      fields: [idNumber, userName, title]
-		    - type: person
-		      fields: [hairColor, height, tattoos]
+			webLogger:
+			  enabled: true
+			  eventNames: [jump, highfive, run]
 
     b. Add an appender of type ``web-logger`` to your Dropwizard configuration YAML in the logging section:
         ``server.yml``
@@ -125,6 +116,17 @@ Example
         public void initialize(Bootstrap<ExampleApplicationConfiguration> bootstrap) {
             bootstrap.addBundle(new WebLoggerBundle());
         }
+
+Errors
+------
+If an `eventName` is passed in that isn't specified in the configuration file, a user will get the follow error:
+
+	{
+	  "code": 400,
+	  "message": "The eventName provided is not specified in the configuration."
+	}
+
+The log will not be recorded.
 
 Setting up the project with an IDE
 ----------------------------------

@@ -23,12 +23,12 @@ import io.dropwizard.jackson.Jackson;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Set;
 import java.util.TimeZone;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -37,8 +37,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Resource for logging analytics events.
  */
-@Path("web-logger")
-@Consumes(MediaType.APPLICATION_JSON)
+@Path("web-logger/events")
 public final class WebLoggerResource {
 
     private static final Logger analyticsLogger = LoggerFactory.getLogger(AnalyticsAppenderFactory.ANALYTICS_LOGGER);
@@ -55,54 +54,29 @@ public final class WebLoggerResource {
     }
 
     @POST
-    public void logContent(String eventJsonString) throws ParseException {
+    @Path("{eventName}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void logContent(@PathParam("eventName") String eventName, String jsonStringEvent) throws ParseException {
 
-        JSONObject jsonEvent = new JSONObject(eventJsonString);
-        Set<String> logLineFields = jsonEvent.keySet();
+        JSONObject jsonEvent = new JSONObject(jsonStringEvent);
 
-        boolean validEvent = false;
-        String eventType = "";
-        boolean eventLogEnabled = false;
+        if (config.getEventNames().contains(eventName)) {
+            JSONObject jsonLog = addEventName(jsonEvent, eventName);
+            jsonLog = addTimestamp(jsonLog);
 
-        for (LoggerEvent event : config.getEvents()) {
-            if (event.getFields().containsAll(logLineFields)) {
-                validEvent = true;
-                eventType = event.getType();
-                eventLogEnabled = event.getEnabled();
-            }
-        }
-
-        if (!validEvent) {
-            generateFieldsDontMatchError(jsonEvent);
-        }
-
-        if (eventLogEnabled) {
-            jsonEvent = addFixedFields(jsonEvent);
-            jsonEvent = addEventType(jsonEvent, eventType);
-
-            analyticsLogger.info(jsonEvent.toString());
+            analyticsLogger.info(jsonLog.toString());
+        } else {
+            throw new BadRequestException("The eventName param provided is not specified in the configuration."
+                    + " Possible options include: " + config.getEventNames().toString());
         }
     }
 
-    private void generateFieldsDontMatchError(JSONObject jsonEvent) {
-        StringBuffer buffer = new StringBuffer();
-        for (LoggerEvent event : config.getEvents()) {
-            buffer.append(event.getFields().toString() + " ");
-        }
-        String fieldSets = buffer.toString();
-
-        throw new BadRequestException("It's likely that the fields in the log provided don't "
-                + "match the server's configuration. Please adjust your log fields or the"
-                + " configuration in your <server>.yml file. Possible choices are: "
-                + fieldSets + ". You provided: " + jsonEvent.keySet());
-    }
-
-    private JSONObject addEventType(JSONObject jsonEvent, String eventType) {
-        jsonEvent.put("EventType", eventType);
+    private JSONObject addEventName(JSONObject jsonEvent, String eventName) {
+        jsonEvent.put("eventName", eventName);
         return jsonEvent;
     }
 
-    private JSONObject addFixedFields(JSONObject jsonEvent) {
+    private JSONObject addTimestamp(JSONObject jsonEvent) {
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss z");
         ft.setTimeZone(TimeZone.getTimeZone("UTC"));
         jsonEvent.put("timestamp", ft.format(new Date()));

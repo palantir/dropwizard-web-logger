@@ -12,11 +12,15 @@ Dropwizard Web Logger
 ####Make Call
 *Send a POST request to:*
 
-	http://localhost:8000/<web-app-name>/api/web-logger
+	http://localhost:8000/<web-app-name>/api/web-logger/events/<eventName>
+
+Example
+
+	http://localhost:8000/<web-app-name>/api/web-logger/events/jump
 
 *with the body content:*
 
-	{"eventName":"jump","height":"42feet","name":"douglas”}
+	{"height":"42feet","name":"douglas"}
 
 *and the following configuration:*
 
@@ -26,7 +30,7 @@ Dropwizard Web Logger
 ####A Line is Logged
 Logger will log the following line to a file on a specific backend
 
-	{"eventName":"jump","height":"42feet", "name":"douglas","timestamp":"2016-02-18 12:23:54 UTC"}
+	{"name":"douglas","eventName":"jump","height":"42feet","timestamp":"2016-03-07 10:41:38 UTC"}
 
 ###Fixed Fields
 Fixed fields will be added to all logged lines.
@@ -117,10 +121,10 @@ Errors
 ------
 If an `eventName` is passed in that isn't specified in the configuration file, a user will get the follow error:
 
-{
-  "code": 400,
-  "message": "The eventName provided is not specified in the configuration."
-}
+	{
+	  "code": 400,
+	  "message": "The eventName provided is not specified in the configuration."
+	}
 
 The log will not be recorded.
 

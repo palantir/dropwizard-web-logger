@@ -20,10 +20,9 @@ import static org.mockito.Mockito.mock;
 
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.core.Appender;
+import com.google.common.collect.ImmutableSet;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import javax.ws.rs.BadRequestException;
 import org.junit.Test;
@@ -40,35 +39,15 @@ public final class WebLoggerResourceTests {
         Logger root = (Logger) LoggerFactory.getLogger("analytics");
         root.addAppender(mockAppender);
 
-        Set<LoggerEvent> events = new HashSet<LoggerEvent>();
-
-        LoggerEvent loggerEvent = new LoggerEvent() {
-            @Override
-            public Set<String> getFields() {
-                return new HashSet<String>(Arrays.asList("user", "title"));
-            }
-
-            @Override
-            public String getType() {
-                return "userLogin";
-            }
-
-            @Override
-            public boolean getEnabled() {
-                return true;
-            }
-        };
-
-        events.add(loggerEvent);
+        Set<String> events = ImmutableSet.of("eventName", "test");
 
         WebLoggerConfiguration webLoggerConfiguration =
-                ImmutableWebLoggerConfiguration.builder().events(events).build();
+                ImmutableWebLoggerConfiguration.builder().eventNames(events).build();
 
         WebLoggerResource webLoggerResource = new WebLoggerResource(webLoggerConfiguration);
 
-        String eventJson = "{\"badUser\": \"storm\"}";
+        String eventJson = "{\"eventName\": \"unspecifiedEventName\", \"another\": \"something\"}";
         webLoggerResource.logContent(eventJson);
-
     }
 
     @Test
@@ -77,37 +56,16 @@ public final class WebLoggerResourceTests {
         Logger root = (Logger) LoggerFactory.getLogger("analytics");
         root.addAppender(mockAppender);
 
-        Set<LoggerEvent> events = new HashSet<LoggerEvent>();
-
-        LoggerEvent loggerEvent = new LoggerEvent() {
-            @Override
-            public Set<String> getFields() {
-                return new HashSet<String>(Arrays.asList("user", "title"));
-            }
-
-            @Override
-            public String getType() {
-                return "userLogin";
-            }
-
-            @Override
-            public boolean getEnabled() {
-                return true;
-            }
-        };
-
-        events.add(loggerEvent);
+        Set<String> events = ImmutableSet.of("specifiedEventName", "someOtherEvent");
 
         WebLoggerConfiguration webLoggerConfiguration =
-                ImmutableWebLoggerConfiguration.builder().events(events).build();
+                ImmutableWebLoggerConfiguration.builder().eventNames(events).build();
 
         WebLoggerResource webLoggerResource = new WebLoggerResource(webLoggerConfiguration);
 
-        String eventJson = "{\"user\": \"storm\",\"title\": \"scientist\"}";
+        String eventJson = "{\"eventName\": \"specifiedEventName\", \"another\": \"something\"}";
         webLoggerResource.logContent(eventJson);
 
         // Doesn't throw exception..
-
     }
-
 }

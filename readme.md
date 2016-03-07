@@ -16,19 +16,17 @@ Dropwizard Web Logger
 
 *with the body content:*
 
-	{"idNumber":"42","title":"batman","userName":"bruce wayne”}
+	{"eventName":"jump","height":"42feet","name":"douglas”}
 
 *and the following configuration:*
 
 	webLogger:
-	  events:
-	    - type: userLogin
-	      fields: [idNumber, userName, title]
+	  eventNames: [jump, highfive]
 
 ####A Line is Logged
 Logger will log the following line to a file on a specific backend
 
-	{"idNumber":"42","EventType":"userLogin","title":"batman","userName":"bruce wayne","timestamp":"2016-02-18 12:23:54 UTC"}
+	{"eventName":"jump","name":"douglas","timestamp":"2016-02-18 12:23:54 UTC"}
 
 ###Fixed Fields
 Fixed fields will be added to all logged lines.
@@ -36,7 +34,6 @@ Fixed fields will be added to all logged lines.
 | Type   | Description                                                                                                                                  |
 |--------|----------------------------------------------------------------------------------------------------------------------------------------------|
 | Timestamp | The timestamp of the log will be logged as *yyyy-MM-dd HH:mm:ss z* in UTC |
-| EventType | The event type defined in the web-logger-bundle configuration |
 
 Usage
 -----
@@ -57,22 +54,12 @@ Usage
 
 		    webLogger:
 		      enabled: <true|false> # optional - defaults to true
-		      events:
-		        - type: <eventTypeName>
-		          fields: [<fields>]
-		          enabled: <true|false> # optional - defaults to true
-		        - type: <eventTypeName>
-		          fields: [<fields]
-		          enabled: <true|false> # optional - defaults to true
-Example
+		      eventNames: [<EventNames>]
+	   Example
         
 			webLogger:
 			  enabled: true
-			  events:
-			    - type: userLogin
-			      fields: [idNumber, userName, title]
-			    - type: userAuthLog
-			      fields: [idNumber, userName, someOtherField]
+			  eventNames: [jump, highfive, run]
 
     b. Add an appender of type ``web-logger`` to your Dropwizard configuration YAML in the logging section:
         ``server.yml``

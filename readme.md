@@ -26,7 +26,7 @@ Dropwizard Web Logger
 ####A Line is Logged
 Logger will log the following line to a file on a specific backend
 
-	{"eventName":"jump","name":"douglas","timestamp":"2016-02-18 12:23:54 UTC"}
+	{"eventName":"jump","height":"42feet", "name":"douglas","timestamp":"2016-02-18 12:23:54 UTC"}
 
 ###Fixed Fields
 Fixed fields will be added to all logged lines.

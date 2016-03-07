@@ -56,7 +56,7 @@ public final class WebLoggerResource {
     @POST
     @Path("{eventName}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void logContent(String jsonStringEvent, @PathParam("eventName") String eventName) throws ParseException {
+    public void logContent(@PathParam("eventName") String eventName, String jsonStringEvent) throws ParseException {
 
         JSONObject jsonEvent = new JSONObject(jsonStringEvent);
 

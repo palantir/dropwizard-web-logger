@@ -113,6 +113,17 @@ Usage
             bootstrap.addBundle(new WebLoggerBundle());
         }
 
+Errors
+------
+If an `eventName` is passed in that isn't specified in the configuration file, a user will get the follow error:
+
+{
+  "code": 400,
+  "message": "The eventName provided is not specified in the configuration."
+}
+
+The log will not be recorded.
+
 Setting up the project with an IDE
 ----------------------------------
 with Eclipse, import the project and run:

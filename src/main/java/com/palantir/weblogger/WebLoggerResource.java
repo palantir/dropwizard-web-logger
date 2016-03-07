@@ -62,7 +62,7 @@ public final class WebLoggerResource {
             jsonEvent = addTimestamp(jsonEvent);
             analyticsLogger.info(jsonEvent.toString());
         } else {
-            throw new BadRequestException("The eventName provided was not specified in the configuration.");
+            throw new BadRequestException("The eventName provided is not specified in the configuration.");
         }
 
     }

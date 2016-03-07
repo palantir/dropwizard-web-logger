@@ -54,17 +54,12 @@ public final class WebLoggerResource {
     }
 
     @POST
-    public void logContent(String eventJsonString) throws ParseException {
-
-        JSONObject jsonEvent = new JSONObject(eventJsonString);
-
+    public void logContent(JSONObject jsonEvent) throws ParseException {
         if (config.getEventNames().contains(jsonEvent.getString("eventName"))) {
-            jsonEvent = addTimestamp(jsonEvent);
-            analyticsLogger.info(jsonEvent.toString());
+            analyticsLogger.info(addTimestamp(jsonEvent).toString());
         } else {
             throw new BadRequestException("The eventName provided is not specified in the configuration.");
         }
-
     }
 
     private JSONObject addTimestamp(JSONObject jsonEvent) {

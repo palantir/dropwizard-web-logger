@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Set;
 import javax.ws.rs.BadRequestException;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +48,8 @@ public final class WebLoggerResourceTests {
         WebLoggerResource webLoggerResource = new WebLoggerResource(webLoggerConfiguration);
 
         String eventJson = "{\"eventName\": \"unspecifiedEventName\", \"another\": \"something\"}";
-        webLoggerResource.logContent(eventJson);
+
+        webLoggerResource.logContent(new JSONObject(eventJson));
     }
 
     @Test
@@ -64,7 +66,7 @@ public final class WebLoggerResourceTests {
         WebLoggerResource webLoggerResource = new WebLoggerResource(webLoggerConfiguration);
 
         String eventJson = "{\"eventName\": \"specifiedEventName\", \"another\": \"something\"}";
-        webLoggerResource.logContent(eventJson);
+        webLoggerResource.logContent(new JSONObject(eventJson));
 
         // Doesn't throw exception..
     }

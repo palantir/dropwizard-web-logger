@@ -48,7 +48,7 @@ public final class WebLoggerResourceTests {
 
         String eventJson = "{\"eventName\": \"unspecifiedEventName\", \"another\": \"something\"}";
 
-        webLoggerResource.logContent(eventJson, "jump");
+        webLoggerResource.logContent("jump", eventJson);
     }
 
     @Test
@@ -65,7 +65,7 @@ public final class WebLoggerResourceTests {
         WebLoggerResource webLoggerResource = new WebLoggerResource(webLoggerConfiguration);
 
         String eventJson = "{\"eventName\": \"specifiedEventName\", \"another\": \"something\"}";
-        webLoggerResource.logContent(eventJson, "specifiedEventName");
+        webLoggerResource.logContent("specifiedEventName", eventJson);
 
         // Doesn't throw exception..
     }

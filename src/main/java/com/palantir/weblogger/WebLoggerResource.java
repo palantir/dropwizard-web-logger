@@ -28,6 +28,7 @@ import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -36,8 +37,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Resource for logging analytics events.
  */
-@Path("web-logger")
-@Consumes(MediaType.APPLICATION_JSON)
+@Path("web-logger/events")
 public final class WebLoggerResource {
 
     private static final Logger analyticsLogger = LoggerFactory.getLogger(AnalyticsAppenderFactory.ANALYTICS_LOGGER);
@@ -54,12 +54,25 @@ public final class WebLoggerResource {
     }
 
     @POST
-    public void logContent(JSONObject jsonEvent) throws ParseException {
-        if (config.getEventNames().contains(jsonEvent.getString("eventName"))) {
-            analyticsLogger.info(addTimestamp(jsonEvent).toString());
+    @Path("{eventName}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void logContent(String jsonStringEvent, @PathParam("eventName") String eventName) throws ParseException {
+
+        JSONObject jsonEvent = new JSONObject(jsonStringEvent);
+
+        if (config.getEventNames().contains(eventName)) {
+            JSONObject jsonLog = addEventName(jsonEvent, eventName);
+            jsonLog = addTimestamp(jsonLog);
+            analyticsLogger.info(jsonLog.toString());
         } else {
-            throw new BadRequestException("The eventName provided is not specified in the configuration.");
+            throw new BadRequestException("The eventName param provided is not specified in the configuration."
+                    + " Possible options include: " + config.getEventNames().toString());
         }
+    }
+
+    private JSONObject addEventName(JSONObject jsonEvent, String eventName) {
+        jsonEvent.put("eventName", eventName);
+        return jsonEvent;
     }
 
     private JSONObject addTimestamp(JSONObject jsonEvent) {

@@ -5,6 +5,7 @@
 .loadpath
 .project
 .settings/
+/bin
 
 ### Gradle ###
 .gradle

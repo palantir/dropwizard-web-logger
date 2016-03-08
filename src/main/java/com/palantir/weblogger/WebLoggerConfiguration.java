@@ -17,7 +17,6 @@
 package com.palantir.weblogger;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.Set;
 import org.immutables.value.Value;
 
@@ -26,15 +25,34 @@ import org.immutables.value.Value;
  */
 
 @Value.Immutable
-@JsonSerialize(as = ImmutableWebLoggerConfiguration.class)
 @JsonDeserialize(as = ImmutableWebLoggerConfiguration.class)
+@Value.Style(
+        visibility = Value.Style.ImplementationVisibility.PACKAGE,
+        builderVisibility = Value.Style.BuilderVisibility.PACKAGE)
 @SuppressWarnings("checkstyle:designforextension")
 public abstract class WebLoggerConfiguration {
 
     @Value.Default
-    public boolean getEnabled() {
+    public boolean enabled() {
         return true;
     }
 
-    public abstract Set<String> getEventNames();
+    public abstract Set<String> eventNames();
+
+    // hides implementation details
+    public static Builder builder() {
+        return ImmutableWebLoggerConfiguration.builder();
+    }
+
+    // hides implementation details
+    public interface Builder {
+
+        Builder enabled(boolean enabled);
+
+        Builder eventNames(Iterable<String> eventNames);
+
+        Builder from(WebLoggerConfiguration otherConfig);
+
+        WebLoggerConfiguration build();
+    }
 }

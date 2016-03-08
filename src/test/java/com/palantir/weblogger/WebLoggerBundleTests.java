@@ -29,6 +29,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import java.util.Collections;
 import java.util.Set;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -36,7 +37,9 @@ import org.junit.Test;
  */
 public final class WebLoggerBundleTests {
 
-    public static final WebLoggerConfigurationProvider PROVIDER_CONFIG =
+    private static final Bootstrap<?> BOOTSTRAP = mock(Bootstrap.class);
+    private static final Environment ENVIRONMENT = mock(Environment.class);
+    private static final WebLoggerConfigurationProvider PROVIDER_CONFIG =
             new WebLoggerConfigurationProvider() {
         @Override
         public WebLoggerConfiguration getWebLogger() {
@@ -44,31 +47,26 @@ public final class WebLoggerBundleTests {
             return ImmutableWebLoggerConfiguration.builder().eventNames(list).build();
         }
     };
+    private JerseyEnvironment jerseyEnvironment;
+
+    @Before
+    public void setUp() {
+        jerseyEnvironment = mock(JerseyEnvironment.class);
+        when(ENVIRONMENT.jersey()).thenReturn(jerseyEnvironment);
+        ObjectMapper objectMapper = Jackson.newObjectMapper();
+        when(ENVIRONMENT.getObjectMapper()).thenReturn(objectMapper);
+    }
 
     @Test
     public void testAddsWebLoggerResource() {
-        Environment environment = mock(Environment.class);
-        JerseyEnvironment jerseyEnvironment = mock(JerseyEnvironment.class);
-        when(environment.jersey()).thenReturn(jerseyEnvironment);
-        ObjectMapper objectMapper = Jackson.newObjectMapper();
-        when(environment.getObjectMapper()).thenReturn(objectMapper);
-        Bootstrap<?> bootstrap = mock(Bootstrap.class);
-
         WebLoggerBundle webLoggerBundle = new WebLoggerBundle();
-        webLoggerBundle.initialize(bootstrap);
-        webLoggerBundle.run(PROVIDER_CONFIG, environment);
+        webLoggerBundle.initialize(BOOTSTRAP);
+        webLoggerBundle.run(PROVIDER_CONFIG, ENVIRONMENT);
         verify(jerseyEnvironment).register(isA(WebLoggerResource.class));
     }
 
     @Test
     public void testDoesNotAddWebLoggerResourceWhenDisabled() {
-        JerseyEnvironment jerseyEnvironment = mock(JerseyEnvironment.class);
-        Environment environment = mock(Environment.class);
-        when(environment.jersey()).thenReturn(jerseyEnvironment);
-        ObjectMapper objectMapper = Jackson.newObjectMapper();
-        when(environment.getObjectMapper()).thenReturn(objectMapper);
-        Bootstrap<?> bootstrap = mock(Bootstrap.class);
-
         WebLoggerConfigurationProvider config = new WebLoggerConfigurationProvider() {
             @Override
             public WebLoggerConfiguration getWebLogger() {
@@ -78,8 +76,8 @@ public final class WebLoggerBundleTests {
         };
 
         WebLoggerBundle webLoggerBundle = new WebLoggerBundle();
-        webLoggerBundle.initialize(bootstrap);
-        webLoggerBundle.run(config, environment);
+        webLoggerBundle.initialize(BOOTSTRAP);
+        webLoggerBundle.run(config, ENVIRONMENT);
         verify(jerseyEnvironment, never()).register(isA(WebLoggerResource.class));
     }
 }

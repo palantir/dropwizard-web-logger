@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.dropwizard.jackson.Jackson;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -56,10 +55,7 @@ public final class WebLoggerResource {
     @POST
     @Path("{eventName}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void logContent(@PathParam("eventName") String eventName, String jsonStringEvent) throws ParseException {
-
-        JSONObject jsonEvent = new JSONObject(jsonStringEvent);
-
+    public void logContent(@PathParam("eventName") String eventName, JSONObject jsonEvent) {
         if (config.getEventNames().contains(eventName)) {
             JSONObject jsonLog = addEventName(jsonEvent, eventName);
             jsonLog = addTimestamp(jsonLog);

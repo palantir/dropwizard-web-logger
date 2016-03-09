@@ -25,7 +25,7 @@ Example
 *and the following configuration:*
 
 	webLogger:
-	  eventNames: [jump, highfive]
+	  enabled: true
 
 ####A Line is Logged
 Logger will log the following line to a file on a specific backend

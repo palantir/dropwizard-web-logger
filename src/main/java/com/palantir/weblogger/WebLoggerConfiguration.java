@@ -49,8 +49,6 @@ public abstract class WebLoggerConfiguration {
 
         Builder enabled(boolean enabled);
 
-        Builder eventNames(Iterable<String> eventNames);
-
         Builder from(WebLoggerConfiguration otherConfig);
 
         WebLoggerConfiguration build();

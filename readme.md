@@ -90,23 +90,23 @@ Usage
                   archivedLogFilenamePattern: ./var/log/fe-logger-usage-%d.json.log
                   archivedFileCount: 5
 
-3. Have your configuration implement ``WebLoggerConfigurationProvider``:
+3. Have your configuration implement ``WebLoggerConfigurable``:
 
         public final class ExampleApplicationConfiguration extends Configuration
-                implements WebLoggerConfigurationProvider {
+                implements WebLoggerConfigurable {
 
-            private final WebLoggerConfiguration webLogger;
+            private final WebLoggerConfiguration webLoggerConfig;
 
             @JsonCreator
             public ExampleApplicationConfiguration(
-                @JsonProperty("webLogger") WebLoggerConfiguration webLogger) {
+                @JsonProperty("webLogger") WebLoggerConfiguration webLoggerConfig) {
 
-                this.webLogger = webLogger;
+                this.webLoggerConfig = webLoggerConfig;
             }
 
             @Override
-            public WebLoggerConfiguration getWebLogger() {
-                return this.webLogger;
+            public WebLoggerConfiguration getWebLoggerConfiguration() {
+                return this.webLoggerConfig;
             }
         }
 

@@ -20,6 +20,6 @@ package com.palantir.weblogger;
  * Implemented by the consuming application's configuration class to ensure this bundle specific
  * configuration is provided.
  */
-public interface WebLoggerConfigurationProvider {
-    WebLoggerConfiguration getWebLogger();
+public interface WebLoggerConfigurable {
+    WebLoggerConfiguration getWebLoggerConfiguration();
 }

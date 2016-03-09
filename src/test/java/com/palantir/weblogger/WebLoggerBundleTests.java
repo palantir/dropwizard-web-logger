@@ -36,10 +36,10 @@ import org.junit.Test;
  */
 public final class WebLoggerBundleTests {
 
-    public static final WebLoggerConfigurationProvider PROVIDER_CONFIG =
-            new WebLoggerConfigurationProvider() {
+    public static final WebLoggerConfigurable PROVIDER_CONFIG =
+            new WebLoggerConfigurable() {
         @Override
-        public WebLoggerConfiguration getWebLogger() {
+        public WebLoggerConfiguration getWebLoggerConfiguration() {
             Set<String> list = Collections.<String>emptySet();
             return ImmutableWebLoggerConfiguration.builder().eventNames(list).build();
         }
@@ -69,9 +69,9 @@ public final class WebLoggerBundleTests {
         when(environment.getObjectMapper()).thenReturn(objectMapper);
         Bootstrap<?> bootstrap = mock(Bootstrap.class);
 
-        WebLoggerConfigurationProvider config = new WebLoggerConfigurationProvider() {
+        WebLoggerConfigurable config = new WebLoggerConfigurable() {
             @Override
-            public WebLoggerConfiguration getWebLogger() {
+            public WebLoggerConfiguration getWebLoggerConfiguration() {
                 Set<String> list = Collections.<String>emptySet();
                 return ImmutableWebLoggerConfiguration.builder().enabled(false).eventNames(list).build();
             }

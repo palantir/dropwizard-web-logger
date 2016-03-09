@@ -25,7 +25,7 @@ import io.dropwizard.setup.Environment;
 /**
  * Bundle to expose an API endpoint to log analytics events.
  */
-public final class WebLoggerBundle implements ConfiguredBundle<WebLoggerConfigurationProvider> {
+public final class WebLoggerBundle implements ConfiguredBundle<WebLoggerConfigurable> {
 
     @Override
     public void initialize(Bootstrap<?> bootstrap) {
@@ -33,12 +33,12 @@ public final class WebLoggerBundle implements ConfiguredBundle<WebLoggerConfigur
     }
 
     @Override
-    public void run(WebLoggerConfigurationProvider config, Environment environment) {
+    public void run(WebLoggerConfigurable config, Environment environment) {
         checkNotNull(config);
         checkNotNull(environment);
 
-        if (config.getWebLogger().enabled()) {
-            environment.jersey().register(new WebLoggerResource(config.getWebLogger()));
+        if (config.getWebLoggerConfiguration().enabled()) {
+            environment.jersey().register(new WebLoggerResource(config.getWebLoggerConfiguration()));
         }
     }
 }

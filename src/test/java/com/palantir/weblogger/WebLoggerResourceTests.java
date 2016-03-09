@@ -24,7 +24,6 @@ import com.google.common.collect.ImmutableSet;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Set;
-import javax.ws.rs.BadRequestException;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
@@ -32,24 +31,6 @@ import org.slf4j.LoggerFactory;
  * Tests for {@link WebLoggerResource}.
  */
 public final class WebLoggerResourceTests {
-
-    @Test(expected = BadRequestException.class)
-    public void testBadFieldsInLogContent() throws IOException, ParseException {
-        Appender mockAppender = mock(Appender.class);
-        Logger root = (Logger) LoggerFactory.getLogger("analytics");
-        root.addAppender(mockAppender);
-
-        Set<String> events = ImmutableSet.of("eventName", "test");
-
-        WebLoggerConfiguration webLoggerConfiguration =
-                ImmutableWebLoggerConfiguration.builder().eventNames(events).build();
-
-        WebLoggerResource webLoggerResource = new WebLoggerResource(webLoggerConfiguration);
-
-        String eventJson = "{\"eventName\": \"unspecifiedEventName\", \"another\": \"something\"}";
-
-        webLoggerResource.logContent("jump", eventJson);
-    }
 
     @Test
     public void testGoodFieldsInLogContent() throws IOException, ParseException {

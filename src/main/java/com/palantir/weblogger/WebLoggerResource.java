@@ -24,7 +24,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -57,18 +56,13 @@ public final class WebLoggerResource {
     @Path("{eventName}")
     @Consumes(MediaType.APPLICATION_JSON)
     public void logContent(@PathParam("eventName") String eventName, String jsonStringEvent) throws ParseException {
-
         JSONObject jsonEvent = new JSONObject(jsonStringEvent);
 
-        if (config.eventNames().contains(eventName)) {
-            JSONObject jsonLog = addEventName(jsonEvent, eventName);
-            jsonLog = addTimestamp(jsonLog);
+        JSONObject jsonLog = addEventName(jsonEvent, eventName);
+        jsonLog = addTimestamp(jsonLog);
 
-            analyticsLogger.info(jsonLog.toString());
-        } else {
-            throw new BadRequestException("The eventName param provided is not specified in the configuration."
-                    + " Possible options include: " + config.eventNames().toString());
-        }
+        analyticsLogger.info(jsonLog.toString());
+
     }
 
     private JSONObject addEventName(JSONObject jsonEvent, String eventName) {

@@ -1,0 +1,23 @@
+server:
+  applicationContextPath: /example
+
+  applicationConnectors:
+    - type: http
+      port: 8000
+
+webLoggerEnabled: false
+
+logging:
+  appenders:
+    - type: file
+      currentLogFilename: var/log/server.log
+      archivedLogFilenamePattern: var/log/server-%d.log
+      archivedFileCount: 5
+      timeZone: UTC
+      threshold: INFO
+    - type: console
+      threshold: INFO
+    - type: web-logger
+      currentLogFilename: ./src/test/resources/log/fe-logger-usage.json.log
+      archivedLogFilenamePattern: ./var/log/fe-logger-usage-%d.json.log
+      archivedFileCount: 5

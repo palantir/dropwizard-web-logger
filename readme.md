@@ -24,8 +24,7 @@ Example
 
 *and the following configuration:*
 
-	webLogger:
-	  enabled: true
+	webLoggerEnabled: true
 
 ####A Line is Logged
 Logger will log the following line to a file on a specific backend
@@ -48,22 +47,15 @@ Usage
 
 		dependencies {
 			// ... unrelated dependencies omitted ...
-			compile "com.palantir.dropwizard:dropwizard-web-logger:<VERSION>"
+			compile "com.palantir.weblogger:dropwizard-web-logger:<VERSION>"
 		}
 
 2.  Modify your server's **configuration** file
 
-    a. Add ``webLogger`` to your yml file and enable it.
+    a. Add ``webLoggerEnabled`` to your yml file and enable it.
         ``server.yml``
 
-		    webLogger:
-		      enabled: <true|false> # optional - defaults to true
-		      eventNames: [<EventNames>]
-	   Example
-        
-			webLogger:
-			  enabled: true
-			  eventNames: [jump, highfive, run]
+		    webLoggerEnabled: true
 
     b. Add an appender of type ``web-logger`` to your Dropwizard configuration YAML in the logging section:
         ``server.yml``
@@ -95,18 +87,18 @@ Usage
         public final class ExampleApplicationConfiguration extends Configuration
                 implements WebLoggerConfigurable {
 
-            private final WebLoggerConfiguration webLoggerConfig;
+            private final boolean webLoggerEnabled;
 
             @JsonCreator
             public ExampleApplicationConfiguration(
-                @JsonProperty("webLogger") WebLoggerConfiguration webLoggerConfig) {
+                @JsonProperty("webLoggerEnabled") boolean webLoggerEnabled) {
 
-                this.webLoggerConfig = webLoggerConfig;
+                this.webLoggerEnabled = webLoggerEnabled;
             }
 
             @Override
-            public WebLoggerConfiguration getWebLoggerConfiguration() {
-                return this.webLoggerConfig;
+            public boolean isWebLoggerEnabled() {
+                return this.webLoggerEnabled;
             }
         }
 
@@ -117,16 +109,6 @@ Usage
             bootstrap.addBundle(new WebLoggerBundle());
         }
 
-Errors
-------
-If an `eventName` is passed in that isn't specified in the configuration file, a user will get the follow error:
-
-	{
-	  "code": 400,
-	  "message": "The eventName provided is not specified in the configuration."
-	}
-
-The log will not be recorded.
 
 Setting up the project with an IDE
 ----------------------------------

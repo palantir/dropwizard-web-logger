@@ -16,8 +16,6 @@
 
 package com.palantir.weblogger;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.dropwizard.jackson.Jackson;
 import java.text.ParseException;
@@ -41,15 +39,10 @@ public final class WebLoggerResource {
 
     private static final Logger analyticsLogger = LoggerFactory.getLogger(AnalyticsAppenderFactory.ANALYTICS_LOGGER);
 
-    private final WebLoggerConfiguration config;
-
-    public WebLoggerResource(WebLoggerConfiguration config) {
-        checkNotNull(config);
+    public WebLoggerResource() {
 
         // serialise dates as ISO 8601
         Jackson.newObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
-        this.config = config;
     }
 
     @POST

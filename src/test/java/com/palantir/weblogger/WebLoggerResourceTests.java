@@ -19,11 +19,10 @@ package com.palantir.weblogger;
 import static org.mockito.Mockito.mock;
 
 import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
-import com.google.common.collect.ImmutableSet;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Set;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
@@ -32,18 +31,14 @@ import org.slf4j.LoggerFactory;
  */
 public final class WebLoggerResourceTests {
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testGoodFieldsInLogContent() throws IOException, ParseException {
-        Appender mockAppender = mock(Appender.class);
+        Appender<ILoggingEvent> mockAppender = mock(Appender.class);
         Logger root = (Logger) LoggerFactory.getLogger("analytics");
         root.addAppender(mockAppender);
 
-        Set<String> events = ImmutableSet.of("specifiedEventName", "someOtherEvent");
-
-        WebLoggerConfiguration webLoggerConfiguration =
-                ImmutableWebLoggerConfiguration.builder().eventNames(events).build();
-
-        WebLoggerResource webLoggerResource = new WebLoggerResource(webLoggerConfiguration);
+        WebLoggerResource webLoggerResource = new WebLoggerResource();
 
         String eventJson = "{\"eventName\": \"specifiedEventName\", \"another\": \"something\"}";
         webLoggerResource.logContent("specifiedEventName", eventJson);

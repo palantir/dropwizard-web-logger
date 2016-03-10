@@ -53,6 +53,7 @@ public final class AnalyticsAppenderFactoryTests {
         assertEquals(FilterReply.DENY, analyticsFilter.decide(loggingEvent));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testBuild() {
         File file = new File("usage.json.log");

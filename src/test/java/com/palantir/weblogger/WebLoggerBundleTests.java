@@ -27,8 +27,6 @@ import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import java.util.Collections;
-import java.util.Set;
 import org.junit.Test;
 
 /**
@@ -38,12 +36,12 @@ public final class WebLoggerBundleTests {
 
     public static final WebLoggerConfigurable PROVIDER_CONFIG =
             new WebLoggerConfigurable() {
-        @Override
-        public WebLoggerConfiguration getWebLoggerConfiguration() {
-            Set<String> list = Collections.<String>emptySet();
-            return ImmutableWebLoggerConfiguration.builder().eventNames(list).build();
-        }
-    };
+
+                @Override
+                public boolean isWebLoggerEnabled() {
+                    return true;
+                }
+            };
 
     @Test
     public void testAddsWebLoggerResource() {
@@ -70,10 +68,10 @@ public final class WebLoggerBundleTests {
         Bootstrap<?> bootstrap = mock(Bootstrap.class);
 
         WebLoggerConfigurable config = new WebLoggerConfigurable() {
+
             @Override
-            public WebLoggerConfiguration getWebLoggerConfiguration() {
-                Set<String> list = Collections.<String>emptySet();
-                return ImmutableWebLoggerConfiguration.builder().enabled(false).eventNames(list).build();
+            public boolean isWebLoggerEnabled() {
+                return false;
             }
         };
 

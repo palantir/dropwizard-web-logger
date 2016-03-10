@@ -21,5 +21,6 @@ package com.palantir.weblogger;
  * configuration is provided.
  */
 public interface WebLoggerConfigurable {
-    WebLoggerConfiguration getWebLoggerConfiguration();
+
+    boolean isWebLoggerEnabled();
 }

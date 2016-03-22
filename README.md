@@ -61,7 +61,7 @@ Usage
         ``server.yml``
 
 	          - type: web-logger
-	            currentLogFileName: ./var/log/<APPNAME>-usage.json.log
+	            currentLogFilename: ./var/log/<APPNAME>-usage.json.log
 	            archivedLogFilenamePattern: ./var/log/<APPNAME>-usage-%d.json.log
 	            archivedFileCount: <NUMBER_OF_LOGFILES_TO_ARCHIVE>
 

@@ -84,31 +84,33 @@ Usage
 
 3. Have your configuration implement ``WebLoggerConfigurable``:
 
-        public final class ExampleApplicationConfiguration extends Configuration
-                implements WebLoggerConfigurable {
-
-            private final boolean webLoggerEnabled;
-
-            @JsonCreator
-            public ExampleApplicationConfiguration(
-                @JsonProperty("webLoggerEnabled") boolean webLoggerEnabled) {
-
-                this.webLoggerEnabled = webLoggerEnabled;
-            }
-
-            @Override
-            public boolean isWebLoggerEnabled() {
-                return this.webLoggerEnabled;
-            }
-        }
+	``` java
+	public final class ExampleApplicationConfiguration extends Configuration
+	        implements WebLoggerConfigurable {
+	
+	    private final boolean webLoggerEnabled;
+	
+	    @JsonCreator
+	    public ExampleApplicationConfiguration(
+	        @JsonProperty("webLoggerEnabled") boolean webLoggerEnabled) {
+	
+	        this.webLoggerEnabled = webLoggerEnabled;
+	    }
+	
+	    @Override
+	    public boolean isWebLoggerEnabled() {
+	        return this.webLoggerEnabled;
+	    }
+	}
+	```
 
 4. Add the bundle to your Dropwizard application.
-
+	``` java
         @Override
         public void initialize(Bootstrap<ExampleApplicationConfiguration> bootstrap) {
             bootstrap.addBundle(new WebLoggerBundle());
         }
-
+	```
 
 Setting up the project with an IDE
 ----------------------------------

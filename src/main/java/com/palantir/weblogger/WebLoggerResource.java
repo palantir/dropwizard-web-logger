@@ -64,7 +64,7 @@ public final class WebLoggerResource {
     }
 
     private JSONObject addTimestamp(JSONObject jsonEvent) {
-        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss z");
+        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         ft.setTimeZone(TimeZone.getTimeZone("UTC"));
         jsonEvent.put("timestamp", ft.format(new Date()));
         return jsonEvent;

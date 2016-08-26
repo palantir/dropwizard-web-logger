@@ -36,5 +36,3 @@ dependencies {
 
 version gitVersion()
 group 'com.palantir.weblogger'
-
-sourceCompatibility = 1.7

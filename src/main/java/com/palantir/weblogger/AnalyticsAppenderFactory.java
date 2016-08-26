@@ -24,14 +24,15 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.FileAppender;
-import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.encoder.LayoutWrappingEncoder;
 import ch.qos.logback.core.filter.Filter;
+import ch.qos.logback.core.pattern.PatternLayoutBase;
 import ch.qos.logback.core.spi.FilterReply;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import io.dropwizard.logging.DropwizardLayout;
 import io.dropwizard.logging.FileAppenderFactory;
-import java.util.TimeZone;
+import io.dropwizard.logging.async.AsyncAppenderFactory;
+import io.dropwizard.logging.filter.LevelFilterFactory;
+import io.dropwizard.logging.layout.LayoutFactory;
 
 /**
  * Defines appender for logging analytics events.
@@ -41,13 +42,18 @@ import java.util.TimeZone;
  *
  */
 @JsonTypeName(AnalyticsAppenderFactory.ANALYTICS_APPENDER)
-public final class AnalyticsAppenderFactory extends FileAppenderFactory {
+public final class AnalyticsAppenderFactory extends FileAppenderFactory<ILoggingEvent> {
 
     public static final String ANALYTICS_LOGGER = "analytics";
     public static final String ANALYTICS_APPENDER = "web-logger";
 
     @Override
-    public Appender<ILoggingEvent> build(LoggerContext context, String applicationName, Layout<ILoggingEvent> layout) {
+    public Appender<ILoggingEvent> build(
+            LoggerContext context,
+            String applicationName,
+            LayoutFactory<ILoggingEvent> layoutFactory,
+            LevelFilterFactory<ILoggingEvent> levelFilterFactory,
+            AsyncAppenderFactory<ILoggingEvent> asyncAppenderFactory) {
         checkNotNull(context);
         checkNotNull(applicationName);
 
@@ -59,27 +65,27 @@ public final class AnalyticsAppenderFactory extends FileAppenderFactory {
         appender.setPrudent(false);
 
         LayoutWrappingEncoder<ILoggingEvent> layoutEncoder = new LayoutWrappingEncoder<>();
-        layoutEncoder.setLayout(layout == null ? buildLayout(context, getTimeZone()) : layout);
+        layoutEncoder.setLayout(buildLayout(context, layoutFactory));
         appender.setEncoder(layoutEncoder);
 
         // instead of adding a threshold filter, filter out all events not directed at the analytics logger
         appender.addFilter(new AnalyticsFilter());
-        appender.stop();
         appender.start();
 
         // prevent events from the analytics logger from propagating further up
         Logger analyticsLogger = context.getLogger(ANALYTICS_LOGGER);
         analyticsLogger.setAdditive(false);
         analyticsLogger.setLevel(Level.ALL);
-        Appender<ILoggingEvent> asyncAppender = wrapAsync(appender);
+        Appender<ILoggingEvent> asyncAppender = wrapAsync(appender, asyncAppenderFactory);
         analyticsLogger.addAppender(asyncAppender);
 
         return asyncAppender;
     }
 
     @Override
-    protected DropwizardLayout buildLayout(LoggerContext context, TimeZone timeZone) {
-        DropwizardLayout formatter = new DropwizardLayout(context, timeZone);
+    protected PatternLayoutBase<ILoggingEvent> buildLayout(
+            LoggerContext context, LayoutFactory<ILoggingEvent> layoutFactory) {
+        PatternLayoutBase<ILoggingEvent> formatter = layoutFactory.build(context, getTimeZone());
         formatter.setPattern("%m%n");
         formatter.start();
         return formatter;

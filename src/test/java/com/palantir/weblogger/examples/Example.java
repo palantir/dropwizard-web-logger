@@ -36,10 +36,6 @@ public final class Example {
     }
 
     private static class ExampleApplication extends Application<ExampleConfiguration> {
-        public static void main(String[] args) throws Exception {
-            new ExampleApplication().run(args);
-        }
-
         @Override
         public void initialize(Bootstrap<ExampleConfiguration> bootstrap) {
             bootstrap.addBundle(new WebLoggerBundle());

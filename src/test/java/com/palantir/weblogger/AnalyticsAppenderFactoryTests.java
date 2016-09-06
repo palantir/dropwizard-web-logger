@@ -23,9 +23,11 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
-import ch.qos.logback.core.Layout;
+import ch.qos.logback.core.pattern.PatternLayoutBase;
 import ch.qos.logback.core.spi.FilterReply;
-import io.dropwizard.logging.DropwizardLayout;
+import io.dropwizard.logging.async.AsyncLoggingEventAppenderFactory;
+import io.dropwizard.logging.filter.ThresholdLevelFilterFactory;
+import io.dropwizard.logging.layout.LayoutFactory;
 import java.io.File;
 import java.util.TimeZone;
 import org.junit.Test;
@@ -59,12 +61,17 @@ public final class AnalyticsAppenderFactoryTests {
         File file = new File("usage.json.log");
         try {
             Logger logger = (Logger) LoggerFactory.getLogger("analytics");
-            Layout<ILoggingEvent> layout = Mockito.mock(Layout.class);
+            LayoutFactory<ILoggingEvent> mockLayoutFactory = Mockito.mock(
+                    LayoutFactory.class, Mockito.RETURNS_DEEP_STUBS);
             AnalyticsAppenderFactory analyticsAppenderFactory = new AnalyticsAppenderFactory();
             analyticsAppenderFactory.setCurrentLogFilename(file.getAbsolutePath());
             analyticsAppenderFactory.setArchivedLogFilenamePattern("usage-%d.json.log");
-            Appender<ILoggingEvent> appender = analyticsAppenderFactory.build(logger.getLoggerContext(),
-                    "applicationName", layout);
+            Appender<ILoggingEvent> appender = analyticsAppenderFactory.build(
+                    logger.getLoggerContext(),
+                    "applicationName",
+                    mockLayoutFactory,
+                    new ThresholdLevelFilterFactory(),
+                    new AsyncLoggingEventAppenderFactory());
             assertEquals("async-web-logger", appender.getName());
         } finally {
             if (file.exists()) {
@@ -73,14 +80,21 @@ public final class AnalyticsAppenderFactoryTests {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testBuildLayout() {
-        LoggerContext loggerContext = Mockito.mock(LoggerContext.class);
-        TimeZone timeZone = Mockito.mock(TimeZone.class);
-        Mockito.when(timeZone.getID()).thenReturn("UTC");
+        LoggerContext mockContext = Mockito.mock(LoggerContext.class);
+        LayoutFactory<ILoggingEvent> mockLayoutFactory = Mockito.mock(LayoutFactory.class);
+        PatternLayoutBase<ILoggingEvent> mockLayoutBase = Mockito.mock(PatternLayoutBase.class);
+        TimeZone mockTimeZone = Mockito.mock(TimeZone.class);
+
+        Mockito.when(mockLayoutFactory.build(Mockito.eq(mockContext), Mockito.eq(mockTimeZone)))
+                .thenReturn(mockLayoutBase);
+
         AnalyticsAppenderFactory analyticsAppenderFactory = new AnalyticsAppenderFactory();
-        DropwizardLayout layout = analyticsAppenderFactory.buildLayout(loggerContext, timeZone);
-        String expectedPattern = "%m%n";
-        assertEquals(expectedPattern, layout.getPattern());
+        analyticsAppenderFactory.setTimeZone(mockTimeZone);
+        analyticsAppenderFactory.buildLayout(mockContext, mockLayoutFactory);
+
+        Mockito.verify(mockLayoutBase).setPattern("%m%n");
     }
 }

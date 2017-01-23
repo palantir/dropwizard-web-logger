@@ -7,7 +7,7 @@ Dropwizard Web Logger
 ``WebLoggerBundle`` is a Dropwizard bundle used to help log web activity to log files on a server's backend.
 
 
-###Example
+###Example 1: Log Event
 
 ####Make Call
 *Send a POST request to:*
@@ -30,6 +30,30 @@ Example
 Logger will log the following line to a file on a specific backend
 
 	{"name":"douglas","eventName":"jump","height":"42feet","timestamp":"2016-03-07 10:41:38 UTC"}
+
+###Example 2: Log Batch of Events
+
+*Send a POST request to:*
+
+	http://localhost:8000/<web-app-name>/api/web-logger/events/batch
+
+Example
+
+	http://localhost:8000/<web-app-name>/api/web-logger/events/batch
+
+*with the body content:*
+
+	{"jump": {"height":"42feet","name":"douglas"}, "crawl": {"height":"45feet","name":"robert"}}
+
+*and the following configuration:*
+
+	webLoggerEnabled: true
+
+####The Lines are Logged
+Logger will log the following lines to a file on a specific backend
+
+	{"name":"douglas","eventName":"jump","height":"42feet","timestamp":"2016-03-07 10:41:38 UTC"}
+	{"name":"robert","eventName":"crawl","height":"45feet","timestamp":"2016-03-07 10:41:40 UTC"}
 
 ###Fixed Fields
 Fixed fields will be added to all logged lines.

@@ -21,6 +21,7 @@ import io.dropwizard.jackson.Jackson;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.TimeZone;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -55,7 +56,15 @@ public final class WebLoggerResource {
         jsonLog = addTimestamp(jsonLog);
 
         analyticsLogger.info(jsonLog.toString());
+    }
 
+    @POST
+    @Path("batch")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void logBatch(Map<String, String> events) throws ParseException {
+        for (Map.Entry<String, String> event : events.entrySet()) {
+            logContent(event.getKey(), event.getValue());
+        }
     }
 
     private JSONObject addEventName(JSONObject jsonEvent, String eventName) {
